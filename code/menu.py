@@ -1,19 +1,14 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-import pygame.image
-
+import pygame
 
 class Menu:
     def __init__(self, window):
         self.window = window
         self.surf = pygame.image.load('./asset/Menu_fundo.png')
-        
-        # dimensionando a imagem
-        self.rect = self.surf.get_rect(topleft=(576, 324))
-        
-        
-    def run(self, ):
-        self.window.blit(source=self.surf, dest=self.rect)
+        self.rect = self.surf.get_rect(center=(window.get_width() // 2, window.get_height() // 2))  # Centraliza a imagem
+
+    def run(self):
+        self.window.blit(self.surf, self.rect)  
         pygame.display.flip()
-        
-        pass
+
