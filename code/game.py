@@ -12,9 +12,6 @@ class Game:
         self.menu = Menu(self.window)
 
     def run(self):
-        pygame.mixer_music.load('./asset/Menu.wav')
-        pygame.mixer_music.play(-1)
-        
         running = True
         while running:
             for event in pygame.event.get():
@@ -26,8 +23,3 @@ class Game:
 
         pygame.quit()  # Encerra o pygame ao fechar o jogo
             
-            #Checar eventos do pygame
-            #for event in pygame.event.get():
-            #   if event.type == pygame.QUIT:
-            #       pygame.quit() #Fechar a janela do jogo
-            #       quit() #Fechar o jogo

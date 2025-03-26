@@ -9,6 +9,16 @@ class Menu:
         self.rect = self.surf.get_rect(center=(window.get_width() // 2, window.get_height() // 2))  # Centraliza a imagem
 
     def run(self):
-        self.window.blit(self.surf, self.rect)  
-        pygame.display.flip()
+        pygame.mixer_music.load('./asset/Menu.wav')
+        pygame.mixer_music.play(-1)
+        while True:
+            self.window.blit(self.surf, self.rect)  
+            pygame.display.flip()
+            
+            #Checar eventos do pygame
+            for event in pygame.event.get():
+               if event.type == pygame.QUIT:
+                   pygame.quit() #Fechar a janela do jogo
+                   quit() #Fechar o jogo
+
 
