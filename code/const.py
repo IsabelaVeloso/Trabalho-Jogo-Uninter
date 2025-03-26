@@ -1,9 +1,17 @@
 # c
 COLOR_DARK_GREEN = (24,62,12)
 COLOR_GREEN = (40, 105, 20)
+COLOR_ORANGE = (240, 87, 56)
+
+#e
+ENTITY_SPEED = {'Fundopt0': 0,
+                 'Fundopt1': 1,
+                 'Fundopt2': 2,
+                 'Fundopt3': 2}
 
 # m
-MENU_OPTION = ('INICIAR NOVO JOGO',
+MENU_OPTION = ('INICIAR NOVO JOGO - 1 JOGADOR',
+               'INICIAR NOVO JOGO - 2 JOGADORES',
                'RANKING PONTUAÇÃO',
                'SAIR DO JOGO')
 
