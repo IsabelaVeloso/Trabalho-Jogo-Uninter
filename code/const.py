@@ -1,2 +1,12 @@
+# c
+COLOR_DARK_GREEN = (24,62,12)
+COLOR_GREEN = (40, 105, 20)
+
+# m
+MENU_OPTION = ('INICIAR NOVO JOGO',
+               'RANKING PONTUAÇÃO',
+               'SAIR DO JOGO')
+
+# w
 WIN_WIDTH = 576
 WIN_HEIGHT = 324
