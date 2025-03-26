@@ -8,7 +8,7 @@ from code.const import MENU_OPTION
 class Menu:  # Aplicar imagem
     def __init__(self, window):
         self.window = window
-        self.surf = pygame.image.load('./asset/Menu_fundo.png') # Buscar imagem no asset
+        self.surf = pygame.image.load('./asset/Menu_fundo.png').convert_alpha() # Buscar imagem no asset
         self.rect = self.surf.get_rect(center=(window.get_width() // 2, window.get_height() // 2))  # Centralizar a imagem
 
     def run(self): # Aplicar áudio
