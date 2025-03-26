@@ -12,6 +12,9 @@ class Game:
         self.menu = Menu(self.window)
 
     def run(self):
+        pygame.mixer_music.load('./asset/Menu.wav')
+        pygame.mixer_music.play(-1)
+        
         running = True
         while running:
             for event in pygame.event.get():
