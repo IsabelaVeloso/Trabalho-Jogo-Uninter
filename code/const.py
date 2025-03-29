@@ -12,9 +12,16 @@ ENTITY_SPEED = {'Fundopt0': 0,
                  'Fundopt3': 2,
                  'Player1': 3,
                  'Player2': 7,
-                 'Enemy': 3,
+                 'Enemy': 4,
                  'Enemy2': 8}
-
+ENTITY_HEALTH = {'Fundopt0': 999,
+                 'Fundopt1': 999,
+                 'Fundopt2': 999,
+                 'Fundopt3': 999,
+                 'Player1': 300,
+                 'Player2': 300,
+                 'Enemy': 50,
+                 'Enemy2': 50}
 # m
 MENU_OPTION = ('INICIAR NOVO JOGO - MODO FÁCIL',
                'INICIAR NOVO JOGO - MODO DÍFICIL',
