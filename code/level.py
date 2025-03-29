@@ -5,7 +5,7 @@ import sys
 
 from pygame import Surface, Rect
 from pygame.font import Font
-from code.const import WIN_WIDTH, WIN_HEIGHT
+from code.const import WIN_WIDTH, WIN_HEIGHT, MENU_OPTION
 from code.const import COLOR_DARK_GREEN, COLOR_GREEN, COLOR_ORANGE
 
 from code.entity import Entity
@@ -14,13 +14,17 @@ from code.entityFactory import EntityFactory
 class Level:
     def __init__(self, window, name, game_mode):
         self.window = window
+        self.timeout = 20000 # 20 segundos
         self.name = name
         self.game_mode = game_mode  
         self.entity_list: list[Entity] = []
         self.entity_list.extend(EntityFactory.get_entity('Fundopt'))
-        self.timeout = 20000 # 20 segundos
-
-
+        
+        if game_mode == MENU_OPTION[0]: # opção do menu que aparece o player 1 [0]
+            self.entity_list.append(EntityFactory.get_entity('Player1'))
+        elif game_mode in [MENU_OPTION[1]]: # opção do menu que aparece o player 2 [1]
+            self.entity_list.append(EntityFactory.get_entity('Player2'))
+        
     def run(self, ):
         pygame.mixer_music.load('./asset/Level.wav') # Buscar áudio no asset
         pygame.mixer_music.play(-1) # Tocar em loop
@@ -36,9 +40,8 @@ class Level:
                     sys.exit()
             # textos aparecem na tela (tempo, atalização e entidades)        
             self.level_text(text_size=14, text=f'{self.name} - Timeout: {self.timeout / 1000 :.1f}s', text_color=COLOR_DARK_GREEN, text_pos=(10, 5))
-            self.level_text(text_size=14, text=f'fps: {clock.get_fps() :.0f}', text_color=COLOR_ORANGE, text_pos=(10, WIN_HEIGHT - 35))
-            self.level_text(text_size=14, text=f'entidades: {len(self.entity_list)}', text_color=COLOR_ORANGE, text_pos=(10, WIN_HEIGHT - 20))
             pygame.display.flip()
+            
         pass
 
 # Definições do texto

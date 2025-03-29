@@ -1,7 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 from code.background import Background
-from code.const import WIN_WIDTH
+from code.const import WIN_WIDTH, WIN_HEIGHT
+from code.player import Player
 
 class EntityFactory:
 
@@ -13,4 +14,8 @@ class EntityFactory:
                 for i in range(4):
                     list_bg.append(Background(name=f'Fundopt{i}', position=(0, 0)))   # Imagens de fundo 
                     list_bg.append(Background(name=f'Fundopt{i}', position=(WIN_WIDTH, 0)))  
-                return list_bg                 
+                return list_bg    
+            case 'Player1':
+                return Player('Player1', (10, 230)) # Dimensão player1 na tela
+            case 'Player2':
+                return Player('Player2', (10, 230)) # Dimensão player2 na tela            

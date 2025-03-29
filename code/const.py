@@ -7,11 +7,13 @@ COLOR_ORANGE = (240, 87, 56)
 ENTITY_SPEED = {'Fundopt0': 0,
                  'Fundopt1': 1,
                  'Fundopt2': 2,
-                 'Fundopt3': 2}
+                 'Fundopt3': 2,
+                 'Player1': 3,
+                 'Player2': 7}
 
 # m
-MENU_OPTION = ('INICIAR NOVO JOGO - 1 JOGADOR',
-               'INICIAR NOVO JOGO - 2 JOGADORES',
+MENU_OPTION = ('INICIAR NOVO JOGO - MODO FÁCIL',
+               'INICIAR NOVO JOGO - MODO DÍFICIL',
                'RANKING PONTUAÇÃO',
                'SAIR DO JOGO')
 
