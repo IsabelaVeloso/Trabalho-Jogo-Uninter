@@ -5,7 +5,7 @@ import sys
 
 from pygame import Surface, Rect
 from pygame.font import Font
-from code.const import WIN_WIDTH, WIN_HEIGHT, MENU_OPTION
+from code.const import WIN_WIDTH, WIN_HEIGHT, MENU_OPTION, EVENT_ENEMY
 from code.const import COLOR_DARK_GREEN, COLOR_GREEN, COLOR_ORANGE
 
 from code.entity import Entity
@@ -19,11 +19,14 @@ class Level:
         self.game_mode = game_mode  
         self.entity_list: list[Entity] = []
         self.entity_list.extend(EntityFactory.get_entity('Fundopt'))
+        self.enemy_count = 0  # Contador de inimigos
         
         if game_mode == MENU_OPTION[0]: # opção do menu que aparece o player 1 [0]
             self.entity_list.append(EntityFactory.get_entity('Player1'))
         elif game_mode in [MENU_OPTION[1]]: # opção do menu que aparece o player 2 [1]
             self.entity_list.append(EntityFactory.get_entity('Player2'))
+        
+        pygame.time.set_timer(EVENT_ENEMY, 2000) # Inimigo a cada 2 seg
         
     def run(self, ):
         pygame.mixer_music.load('./asset/Level.wav') # Buscar áudio no asset
@@ -31,13 +34,26 @@ class Level:
         clock = pygame.time.Clock()
         while True:
             clock.tick(60)
+            self.window.fill((0, 0, 0))  # Limpa a tela a cada frame
+            
             for ent in self.entity_list:
                 self.window.blit(source=ent.surf, dest=ent.rect) # Criação do retangulo e imagem
                 ent.move()
+                
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+                        
+                if event.type == EVENT_ENEMY:
+                    if self.enemy_count < 3:  # Maximo de inimigos juntos na tela
+                        if self.game_mode == MENU_OPTION[0]:
+                            self.entity_list.append(EntityFactory.get_entity('Enemy'))
+                        elif self.game_mode == MENU_OPTION[1]:
+                            self.entity_list.append(EntityFactory.get_entity('Enemy2'))
+                        self.enemy_count += 1  # Atualiza o contador de inimigos
+                                
+
             # textos aparecem na tela (tempo, atalização e entidades)        
             self.level_text(text_size=14, text=f'{self.name} - Timeout: {self.timeout / 1000 :.1f}s', text_color=COLOR_DARK_GREEN, text_pos=(10, 5))
             pygame.display.flip()

@@ -3,6 +3,7 @@
 from code.background import Background
 from code.const import WIN_WIDTH, WIN_HEIGHT
 from code.player import Player
+from code.enemy import Enemy
 
 class EntityFactory:
 
@@ -19,3 +20,7 @@ class EntityFactory:
                 return Player('Player1', (10, 230)) # Dimensão player1 na tela
             case 'Player2':
                 return Player('Player2', (10, 230)) # Dimensão player2 na tela            
+            case 'Enemy':
+                return Enemy('Enemy', (WIN_WIDTH, 230)) # Começando antes da tela e na mesma altura do player
+            case 'Enemy2':
+                return Enemy('Enemy2', (WIN_WIDTH, 230)) # Começando antes da tela e na mesma altura do player
