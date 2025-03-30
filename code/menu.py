@@ -19,8 +19,8 @@ class Menu:  # Aplicar imagem
        # Tela do menu
         while True:
             self.window.blit(self.surf, self.rect) 
-            self.menu_text(text_size=80, text="WAR OF THE", text_color=(COLOR_DARK_GREEN), text_center_pos=(WIN_WIDTH / 2, 70))
-            self.menu_text(text_size=80, text="OGRES", text_color=(COLOR_DARK_GREEN), text_center_pos=(WIN_WIDTH / 2, 120))
+            self.menu_text(text_size=80, text="JUMP OR DIE", text_color=(COLOR_DARK_GREEN), text_center_pos=(WIN_WIDTH / 2, 70))
+            self.menu_text(text_size=50, text="with ogres", text_color=(COLOR_DARK_GREEN), text_center_pos=(WIN_WIDTH / 2, 120))
             
             for i in range(len(MENU_OPTION)):
                 if i == menu_option:

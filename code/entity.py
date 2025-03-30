@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import pygame.image
 from abc import ABC, abstractmethod
-from code.const import ENTITY_HEALTH
+from code.const import ENTITY_HEALTH, ENTITY_DAMAGE
 
 class Entity(ABC): # Classe abstrata
     def __init__(self, name:str, position: tuple):
@@ -11,6 +11,7 @@ class Entity(ABC): # Classe abstrata
         self.rect = self.surf.get_rect(left=position[0], top=position[1])
         self.speed = 0
         self.health = ENTITY_HEALTH[self.name]
+        self.damage = ENTITY_DAMAGE[self.name]
 
     @abstractmethod
     def move(self, ):

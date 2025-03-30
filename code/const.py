@@ -19,12 +19,21 @@ ENTITY_HEALTH = {'Fundopt0': 999,
                  'Fundopt1': 999,
                  'Fundopt2': 999,
                  'Fundopt3': 999,
-                 'Player1': 300,
-                 'Player1_ataque':1,
-                 'Player2': 300,
-                 'Player2_ataque':1,
+                 'Player1': 1,
+                 'Player2': 1,
                  'Enemy': 50,
                  'Enemy2': 50}
+
+ENTITY_DAMAGE = {'Fundopt0': 0,
+                 'Fundopt1': 0,
+                 'Fundopt2': 0,
+                 'Fundopt3': 0,
+                 'Player1': 1,
+                 'Player2': 1,
+                 'Enemy': 1,
+                 'Enemy2': 1}
+
+
 # m
 MENU_OPTION = ('INICIAR NOVO JOGO - MODO FÁCIL',
                'INICIAR NOVO JOGO - MODO DÍFICIL',
