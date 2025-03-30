@@ -9,6 +9,7 @@ from code.entitymediator import EntityMediator
 from code.player import Player
 from code.entity import Entity
 from code.entityFactory import EntityFactory
+from code.enemy import Enemy
 
 class Level:
     def __init__(self, window, name, game_mode):
@@ -118,6 +119,34 @@ class Level:
             # Verifica colisões e saúde das entidades
             EntityMediator.verify_collision(entity_list=self.entity_list)
             EntityMediator.verify_health(entity_list=self.entity_list)
+
+            # Verifica se o jogador perdeu (colisão com inimigo)
+            if self.check_player_loss():
+                self.display_game_over()
+                return None  # Retorna ao menu principal
+
+    # Método que verifica se o jogador perdeu
+    def check_player_loss(self):
+        player = next((ent for ent in self.entity_list if isinstance(ent, Player)), None)
+        enemies = [ent for ent in self.entity_list if isinstance(ent, Enemy)]
+
+        if player:
+            for enemy in enemies:
+                if player.rect.colliderect(enemy.rect):  # Verifica colisão com qualquer inimigo
+                    return True  # Jogador perdeu
+        return False
+
+    # Exibe "YOU LOSE" na tela
+    # Exibe "YOU LOSE" na tela
+    def display_game_over(self):
+        # Usando a mesma fonte da função level_text
+        font = pygame.font.SysFont("aharoni kalin", 100)  # Usando o tamanho da fonte de level_text (14 aqui é um exemplo)
+        text = font.render("YOU LOSE", True, COLOR_DARK_GREEN)  # Cor vermelha
+        text_rect = text.get_rect(center=(WIN_WIDTH // 2, WIN_HEIGHT // 2))
+        self.window.blit(text, text_rect)
+        pygame.display.flip()
+
+        pygame.time.wait(2000)  # Exibe por 2 segundos antes de voltar para o menu
 
     # Definições do texto
     def level_text(self, text_size: int, text: str, text_color: tuple, text_pos: tuple):
