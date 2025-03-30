@@ -24,3 +24,4 @@ class EntityFactory:
                 return Enemy('Enemy', (WIN_WIDTH, 230)) # Começando antes da tela e na mesma altura do player
             case 'Enemy2':
                 return Enemy('Enemy2', (WIN_WIDTH, 230)) # Começando antes da tela e na mesma altura do player
+

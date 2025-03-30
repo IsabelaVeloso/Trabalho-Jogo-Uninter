@@ -14,12 +14,15 @@ ENTITY_SPEED = {'Fundopt0': 0,
                  'Player2': 7,
                  'Enemy': 4,
                  'Enemy2': 8}
+
 ENTITY_HEALTH = {'Fundopt0': 999,
                  'Fundopt1': 999,
                  'Fundopt2': 999,
                  'Fundopt3': 999,
                  'Player1': 300,
+                 'Player1_ataque':1,
                  'Player2': 300,
+                 'Player2_ataque':1,
                  'Enemy': 50,
                  'Enemy2': 50}
 # m
