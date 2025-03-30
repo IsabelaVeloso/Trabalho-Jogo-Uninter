@@ -6,8 +6,8 @@ class Player(Entity):
     def __init__(self, name: str, position: tuple):
         super().__init__(name, position)
         self.is_jumping = False
-        self.jump_speed = -10  # Velocidade inicial do pulo (negativo para subir)
-        self.gravity = 0.5  # Efeito da gravidade
+        self.jump_speed = -15  # Aumente o valor negativo para um pulo mais alto
+        self.gravity = 0.9  # Gravidade para controlar a queda
         self.velocity_y = 0  # Velocidade vertical do player
         self.ground_level = position[1]  # Guarda a posição inicial
         self.default_sprite = name  # Guarda o sprite original
@@ -26,7 +26,7 @@ class Player(Entity):
             for event in events:
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                     self.is_jumping = True
-                    self.velocity_y = self.jump_speed  # Aplica força para cima
+                    self.velocity_y = self.jump_speed  # Aplica maior força para cima
 
         # Aplicando gravidade ao pulo
         if self.is_jumping:

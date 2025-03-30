@@ -19,6 +19,8 @@ class Level:
         self.entity_list: list[Entity] = []
         self.entity_list.extend(EntityFactory.get_entity('Fundopt'))
         self.enemy_count = 0  # Contador de inimigos
+        self.enemy_generation_time = 0  # Tempo para geração de inimigos
+        self.last_enemy_x = WIN_WIDTH  # Inicia com a posição x inicial do primeiro inimigo
         
         if game_mode == MENU_OPTION[0]:  # opção do menu que aparece o player 1 [0]
             self.entity_list.append(EntityFactory.get_entity('Player1'))
@@ -28,7 +30,8 @@ class Level:
         self.set_random_enemy_timer()
 
     def set_random_enemy_timer(self):
-        pygame.time.set_timer(EVENT_ENEMY, random.randint(1500, 4000))  # Ritmo aleatório entre 1.5s e 4s
+        # Tempo aleatório entre 1.5s e 4s
+        self.enemy_generation_time = pygame.time.get_ticks() + random.randint(1500, 4000)
         
     def run(self):
         pygame.mixer_music.load('./asset/Level.wav')
@@ -64,21 +67,39 @@ class Level:
                     pygame.quit()
                     sys.exit()
 
-                if event.type == EVENT_ENEMY:
+                # Gerar inimigos com tempo aleatório
+                if pygame.time.get_ticks() > self.enemy_generation_time:
                     if self.enemy_count < 3:
-                        last_enemy = next((e for e in reversed(self.entity_list) if isinstance(e, Entity) and 'Enemy' in str(type(e))), None)
-                        if last_enemy is None or last_enemy.rect.x < WIN_WIDTH - 200:  # Distância mínima de 200px
-                            if self.game_mode == MENU_OPTION[0]:
-                                self.entity_list.append(EntityFactory.get_entity('Enemy'))
-                            elif self.game_mode == MENU_OPTION[1]:
-                                self.entity_list.append(EntityFactory.get_entity('Enemy2'))
-                            self.enemy_count += 1
-                            self.set_random_enemy_timer()
+                        # Garantir uma distância mínima de 200px entre os inimigos
+                        distance_min = 200
+                        enemy_x = self.last_enemy_x + distance_min + random.randint(100, 200)  # Distância maior entre inimigos
+                        if enemy_x > WIN_WIDTH:
+                            enemy_x = WIN_WIDTH  # Evitar que ultrapasse a tela
+
+                        # Altura fixa para os inimigos
+                        enemy_height = WIN_HEIGHT - 100
+
+                        if self.game_mode == MENU_OPTION[0]:
+                            new_enemy = EntityFactory.get_entity('Enemy')
+                        elif self.game_mode == MENU_OPTION[1]:
+                            new_enemy = EntityFactory.get_entity('Enemy2')
+
+                        new_enemy.rect.x = enemy_x
+                        new_enemy.rect.y = enemy_height  # Mantém a altura fixa
+
+                        self.entity_list.append(new_enemy)
+                        self.enemy_count += 1
+
+                        # Atualiza a posição x do último inimigo gerado
+                        self.last_enemy_x = new_enemy.rect.x
+
+                        # Resetar o tempo para o próximo inimigo
+                        self.set_random_enemy_timer()
 
             # Renderiza o tempo sobrevivido com segundos e milissegundos
             self.level_text(
                 text_size=14, 
-                text=f'{self.name} - Tempo sobrevivido: {elapsed_seconds}.{elapsed_milliseconds:03d}s',
+                text=f'Tempo sobrevivido: {elapsed_seconds}.{elapsed_milliseconds:03d}s',
                 text_color=COLOR_DARK_GREEN, 
                 text_pos=(10, 5)
             )
