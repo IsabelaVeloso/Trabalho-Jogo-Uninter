@@ -4,10 +4,10 @@ from code.player import Player
 
 class EntityMediator:
 
-    survival_time = 0  # Variável para armazenar o tempo de sobrevivência
+    survival_time = 0
 
     @staticmethod
-    def __verify_collision_window(ent: Entity):  # método que só funciona nessa classe
+    def __verify_collision_window(ent: Entity):  
         if isinstance(ent, Enemy):
             if ent.rect.right < 0:  # quando sai da tela, zerar a vida
                 ent.health = 0 

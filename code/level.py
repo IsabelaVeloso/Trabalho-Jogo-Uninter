@@ -22,7 +22,7 @@ class Level:
         self.entity_list.extend(EntityFactory.get_entity('Fundopt'))
         self.enemy_count = 0  # Contador de inimigos
         self.enemy_generation_time = 0  # Tempo para geração de inimigos
-        self.last_enemy_x = WIN_WIDTH  # Inicia com a posição x inicial do primeiro inimigo
+        self.last_enemy_x = WIN_WIDTH 
         
         if game_mode == MENU_OPTION[0]:  # opção do menu que aparece o player 1 [0]
             self.entity_list.append(EntityFactory.get_entity('Player1'))
@@ -32,10 +32,8 @@ class Level:
         self.set_random_enemy_timer()
 
     def set_random_enemy_timer(self):
-        # Tempo aleatório entre 1.5s e 4s
         self.enemy_generation_time = pygame.time.get_ticks() + random.randint(1500, 4000)
-        
-    # Método que verifica se o jogador perdeu
+ 
     def check_player_loss(self):
         player = next((ent for ent in self.entity_list if isinstance(ent, Player)), None)
         enemies = [ent for ent in self.entity_list if isinstance(ent, Enemy)]
@@ -43,7 +41,7 @@ class Level:
         if player:
             for enemy in enemies:
                 if player.rect.colliderect(enemy.rect):  # Verifica colisão com qualquer inimigo
-                    return True  # Jogador perdeu
+                    return True  
         return False
 
     def display_game_over(self):
@@ -54,9 +52,8 @@ class Level:
         self.window.blit(text, text_rect)
         pygame.display.flip()
 
-        pygame.time.wait(1000)  # Exibe por 1 segundo antes de ir para a tela de pontuação
+        pygame.time.wait(1000) 
         
-        # Depois de "YOU LOSE", chama o método de salvar a pontuação
         player_score = [EntityMediator.give_score()]  # Obtém o score
         score_screen = Score(self.window)
         score_screen.save(self.game_mode, player_score)
@@ -70,12 +67,11 @@ class Level:
             clock.tick(60)
             self.window.fill((0, 0, 0))  # Limpa a tela a cada frame
 
-            # Calcula o tempo de jogo em segundos e milissegundos
+    
             elapsed_time_ms = pygame.time.get_ticks() - self.start_time
-            elapsed_seconds = elapsed_time_ms // 1000  # Segundos inteiros
-            elapsed_milliseconds = elapsed_time_ms % 1000  # Milissegundos restantes
+            elapsed_seconds = elapsed_time_ms // 1000  
+            elapsed_milliseconds = elapsed_time_ms % 1000 
 
-            # Atualiza o tempo de sobrevivência no EntityMediator
             EntityMediator.survival_time = elapsed_seconds
 
             events = pygame.event.get()
@@ -94,7 +90,6 @@ class Level:
                     pygame.quit()
                     sys.exit()
 
-                # Gerar inimigos com tempo aleatório
                 if pygame.time.get_ticks() > self.enemy_generation_time:
                     if self.enemy_count < 3:
                         distance_min = 200

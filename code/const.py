@@ -59,6 +59,6 @@ SCORE_POS = {'Title': (WIN_WIDTH / 2, 50),
              7: (WIN_WIDTH / 2, 250),
              8: (WIN_WIDTH / 2, 270),
              9: (WIN_WIDTH / 2, 290),
-             'NameColumn': (WIN_WIDTH / 4, 90),  # Defina as posições corretamente
+             'NameColumn': (WIN_WIDTH / 4, 90),  
              'ScoreColumn': (WIN_WIDTH / 2, 90),
              'DateColumn': (3 * WIN_WIDTH / 4, 90)}
