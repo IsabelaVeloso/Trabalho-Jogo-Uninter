@@ -10,6 +10,7 @@ from code.player import Player
 from code.entity import Entity
 from code.entityFactory import EntityFactory
 from code.enemy import Enemy
+from code.Score import Score # teste
 
 class Level:
     def __init__(self, window, name, game_mode):
@@ -34,6 +35,32 @@ class Level:
         # Tempo aleatório entre 1.5s e 4s
         self.enemy_generation_time = pygame.time.get_ticks() + random.randint(1500, 4000)
         
+    # Método que verifica se o jogador perdeu
+    def check_player_loss(self):
+        player = next((ent for ent in self.entity_list if isinstance(ent, Player)), None)
+        enemies = [ent for ent in self.entity_list if isinstance(ent, Enemy)]
+
+        if player:
+            for enemy in enemies:
+                if player.rect.colliderect(enemy.rect):  # Verifica colisão com qualquer inimigo
+                    return True  # Jogador perdeu
+        return False
+
+    def display_game_over(self):
+        # Exibe "YOU LOSE" por 1 segundo antes de ir para a tela de pontuação
+        font = pygame.font.SysFont("aharoni kalin", 100)
+        text = font.render("YOU LOSE", True, COLOR_DARK_GREEN)
+        text_rect = text.get_rect(center=(WIN_WIDTH // 2, WIN_HEIGHT // 2))
+        self.window.blit(text, text_rect)
+        pygame.display.flip()
+
+        pygame.time.wait(1000)  # Exibe por 1 segundo antes de ir para a tela de pontuação
+        
+        # Depois de "YOU LOSE", chama o método de salvar a pontuação
+        player_score = [EntityMediator.give_score()]  # Obtém o score
+        score_screen = Score(self.window)
+        score_screen.save(self.game_mode, player_score)
+
     def run(self):
         pygame.mixer_music.load('./asset/Level.wav')
         pygame.mixer_music.play(-1)
@@ -51,18 +78,17 @@ class Level:
             # Atualiza o tempo de sobrevivência no EntityMediator
             EntityMediator.survival_time = elapsed_seconds
 
-            # Captura todos os eventos da rodada
-            events = pygame.event.get()  
+            events = pygame.event.get()
 
             for ent in self.entity_list:
-                self.window.blit(source=ent.surf, dest=ent.rect)  # Desenha entidades
+                self.window.blit(source=ent.surf, dest=ent.rect)
                 
                 if isinstance(ent, Player):
-                    ent.move(events)  # Passa os eventos para capturar teclas
-                    ent.attack(events)  # Passa os eventos para capturar ataques
+                    ent.move(events)
+                    ent.attack(events)
                 else:
-                    ent.move()  # Outras entidades podem não precisar de eventos
-            
+                    ent.move()
+
             for event in events:
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -71,13 +97,11 @@ class Level:
                 # Gerar inimigos com tempo aleatório
                 if pygame.time.get_ticks() > self.enemy_generation_time:
                     if self.enemy_count < 3:
-                        # Garantir uma distância mínima de 200px entre os inimigos
                         distance_min = 200
-                        enemy_x = self.last_enemy_x + distance_min + random.randint(100, 200)  # Distância maior entre inimigos
+                        enemy_x = self.last_enemy_x + distance_min + random.randint(100, 200)
                         if enemy_x > WIN_WIDTH:
-                            enemy_x = WIN_WIDTH  # Evitar que ultrapasse a tela
+                            enemy_x = WIN_WIDTH
 
-                        # Altura fixa para os inimigos
                         enemy_height = WIN_HEIGHT - 100
 
                         if self.game_mode == MENU_OPTION[0]:
@@ -86,18 +110,15 @@ class Level:
                             new_enemy = EntityFactory.get_entity('Enemy2')
 
                         new_enemy.rect.x = enemy_x
-                        new_enemy.rect.y = enemy_height  # Mantém a altura fixa
+                        new_enemy.rect.y = enemy_height
 
                         self.entity_list.append(new_enemy)
                         self.enemy_count += 1
 
-                        # Atualiza a posição x do último inimigo gerado
                         self.last_enemy_x = new_enemy.rect.x
 
-                        # Resetar o tempo para o próximo inimigo
                         self.set_random_enemy_timer()
 
-            # Renderiza o tempo sobrevivido com segundos e milissegundos
             self.level_text(
                 text_size=14, 
                 text=f'Tempo sobrevivido: {elapsed_seconds}.{elapsed_milliseconds:03d}s',
@@ -105,48 +126,23 @@ class Level:
                 text_pos=(10, 5)
             )
 
-            # Exibe o score (tempo de sobrevivência)
-            score = EntityMediator.give_score()  # Obtém o tempo de sobrevivência como score
+            score = EntityMediator.give_score()
             self.level_text(
                 text_size=14,
-                text=f'Score: {score}s',  # Exibe o score como o tempo de sobrevivência
+                text=f'Score: {score}s',
                 text_color=COLOR_DARK_GREEN,
-                text_pos=(10, 15)  # Posição do score na tela
+                text_pos=(10, 15)
             )
             
             pygame.display.flip()
 
-            # Verifica colisões e saúde das entidades
             EntityMediator.verify_collision(entity_list=self.entity_list)
             EntityMediator.verify_health(entity_list=self.entity_list)
 
-            # Verifica se o jogador perdeu (colisão com inimigo)
+            # Se o jogador perdeu, chama o game over
             if self.check_player_loss():
                 self.display_game_over()
-                return None  # Retorna ao menu principal
-
-    # Método que verifica se o jogador perdeu
-    def check_player_loss(self):
-        player = next((ent for ent in self.entity_list if isinstance(ent, Player)), None)
-        enemies = [ent for ent in self.entity_list if isinstance(ent, Enemy)]
-
-        if player:
-            for enemy in enemies:
-                if player.rect.colliderect(enemy.rect):  # Verifica colisão com qualquer inimigo
-                    return True  # Jogador perdeu
-        return False
-
-    # Exibe "YOU LOSE" na tela
-    # Exibe "YOU LOSE" na tela
-    def display_game_over(self):
-        # Usando a mesma fonte da função level_text
-        font = pygame.font.SysFont("aharoni kalin", 100)  # Usando o tamanho da fonte de level_text (14 aqui é um exemplo)
-        text = font.render("YOU LOSE", True, COLOR_DARK_GREEN)  # Cor vermelha
-        text_rect = text.get_rect(center=(WIN_WIDTH // 2, WIN_HEIGHT // 2))
-        self.window.blit(text, text_rect)
-        pygame.display.flip()
-
-        pygame.time.wait(2000)  # Exibe por 2 segundos antes de voltar para o menu
+                return None
 
     # Definições do texto
     def level_text(self, text_size: int, text: str, text_color: tuple, text_pos: tuple):
@@ -154,3 +150,4 @@ class Level:
         text_surf: Surface = text_font.render(text, True, text_color).convert_alpha()
         text_rect: Rect = text_surf.get_rect(left=text_pos[0], top=text_pos[1])
         self.window.blit(source=text_surf, dest=text_rect)
+ 
